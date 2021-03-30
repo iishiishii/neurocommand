@@ -196,4 +196,21 @@ if [ $vnm_deskenv != "cli" ]; then
     args="${args} --edit=$vnm_edit"
 fi
 
-python -m neurodesk $args
+# Python installer
+# python -m neurodesk $args
+
+# Singularity installer
+singularity run \
+    --bind ${_base}/neurodesk:${_base}/neurodesk \
+    --bind $vnm_installdir:$vnm_installdir \
+    docker://python:3.9.2-slim-buster \
+    pip install -r neurodesk/requirements.txt && \
+    python -m neurodesk $args
+
+# Docker installer
+# docker build . -t neurodesk:latest
+# docker run -v \
+#     ${_base}/neurodesk:${_base}/neurodesk -v \
+#     $vnm_installdir:$vnm_installdir \
+#     neurodesk:latest \
+#     /bin/bash -c "cd ${_base} && python -m neurodesk $args"
