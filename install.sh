@@ -1,7 +1,6 @@
 #!/bin/bash
 
-_script="$(readlink -f ${BASH_SOURCE[0]})" ## who am i? ##
-_base="$(dirname $_script)" ## Delete last component from $_script ##
+_base="$(cd -- "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 ; pwd -P)"
 source neurodesk/configparser.sh ${_base}/config.ini
 
 echo "WARNING: Will modify/replace system files!!!"

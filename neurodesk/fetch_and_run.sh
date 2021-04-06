@@ -5,8 +5,7 @@
 #   fetch_and_run.sh itksnap 3.8.0 20200505 itksnap-wt
 
 source ~/.bashrc
-_script="$(readlink -f ${BASH_SOURCE[0]})" ## who am i? ##
-_base="$(dirname $_script)" ## Delete last component from $_script ##
+_base="$(cd -- "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 ; pwd -P)"
 echo "[DEBUG] fetch_and_run.sh: Script name : $_script"
 echo "[DEBUG] fetch_and_run.sh: Current working dir : $PWD"
 echo "[DEBUG] fetch_and_run.sh: Script location path (dir) : $_base"

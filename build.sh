@@ -3,9 +3,7 @@
 
 set -e
 
-_script="$(readlink -f ${BASH_SOURCE[0]})" ## who am i? ##
-_base="$(dirname $_script)" ## Delete last component from $_script ##
-
+_base="$(cd -- "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 ; pwd -P)"
 source ${_base}/neurodesk/configparser.sh ${_base}/config.ini
 
 args=""
@@ -81,7 +79,7 @@ if [ "$init" = true ]; then
         echo "Creating $vnm_installdir"
         mkdir -p $vnm_installdir
     fi
-    vnm_installdir=$(readlink -f ${vnm_installdir})
+    vnm_installdir="$(cd -- "$(dirname "${vnm_installdir}")" >/dev/null 2>&1 ; pwd -P)"
     if [ "$vnm_installdir" == $(pwd -P) ]; then
         vnm_installdir="$(pwd -P)/local"
         mkdir -p $vnm_installdir

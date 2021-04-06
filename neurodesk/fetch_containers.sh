@@ -13,13 +13,11 @@ IMG_NAME=${MOD_NAME}_${MOD_VERS}_${MOD_DATE}
 echo "[DEBUG] fetch_containers.sh: IMG_NAME=$IMG_NAME"
 echo "[DEBUG] fetch_containers.sh: SINGULARITY_BINDPATH : $SINGULARITY_BINDPATH"
 
-
-_script="$(readlink -f ${BASH_SOURCE[0]})" ## who am i? ##
-_base="$(dirname $_script)" ## Delete last component from $_script ##
+_base="$(cd -- "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 ; pwd -P)"
 source ${_base}/configparser.sh ${_base}/config.ini
 
 # default path is in the home directory of the user executing the call - except if there is a system wide install:
-export PATH_PREFIX=${vnm_installdir}
+export PATH_PREFIX="$(cd -- "${vnm_installdir}" >/dev/null 2>&1 ; pwd -P)"
 
 export CONTAINER_PATH=$PATH_PREFIX/containers
 export MODS_PATH=$CONTAINER_PATH/modules
@@ -31,14 +29,14 @@ echo "[DEBUG] fetch_containers.sh: trying to module use  ${MODS_PATH}"
 if [ -f '/usr/share/module.sh' ]; then source /usr/share/module.sh; fi
 module use ${MODS_PATH}
 
-if [ ! -L `readlink -f $CONTAINER_PATH` ]; then
-    echo "[DEBUG] fetch_containers.sh: creating `readlink -f $CONTAINER_PATH`"
-    mkdir -p `readlink -f $CONTAINER_PATH` || ( echo "Something went wrong. " && exit )
+if [ ! -L ${CONTAINER_PATH} ]; then
+    echo "[DEBUG] fetch_containers.sh: creating ${CONTAINER_PATH}"
+    mkdir -p ${CONTAINER_PATH} || ( echo "Something went wrong. " && exit )
 fi
 
-if [ ! -d `readlink -f $MODS_PATH` ]; then
-    echo "[DEBUG] fetch_containers.sh: creating `readlink -f $MODS_PATH`"
-    mkdir -p `readlink -f $MODS_PATH` || ( echo "Something went wrong. " && exit )
+if [ ! -d ${MODS_PATH} ]; then
+    echo "[DEBUG] fetch_containers.sh: creating ${MODS_PATH}"
+    mkdir -p ${MODS_PATH} || ( echo "Something went wrong. " && exit )
 fi
 # Update application transparent-singularity with latest version
 cd ${CONTAINER_PATH}
