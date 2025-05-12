@@ -45,11 +45,7 @@ jobs:
             shell: bash
             run: |
               echo "Processing app_batches: ${{ matrix.app_batches }}"
-              if [ -z "${{ matrix.app_batches.apps }}" ]; then
-                echo "Error: app_batches.apps is empty or null."
-                exit 1
-              fi
-              batch=$(echo '[${{ matrix.app_batches.apps }}]' | jq -r '.[]')
+              batch=$(echo '${{ matrix.app_batches.apps }}' | sed "s/'/\"/g" | jq -r '.[]')
               echo "Processing batches: ${batch[*]} "
               for app in $batch; do
                 echo "  Processing app: $app with ${#app[@]} apps"
