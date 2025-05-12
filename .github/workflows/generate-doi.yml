@@ -45,7 +45,7 @@ jobs:
             run: |
               declare -a batch=${{ matrix.app_batches }}
               echo "Processing batches: ${batch[*]} "
-              for app in "${batch[@]}"; do
+              for app in $batch; do
                 echo "  Processing app: $app with ${#app[@]} apps"
                 export IMAGE_HOME="/home/runner"
                 curl --output "$IMAGE_HOME/${app}.simg" "https://object-store.rc.nectar.org.au/v1/AUTH_dead991e1fa847e3afcca2d3a7041f5d/neurodesk/${app}.simg"
