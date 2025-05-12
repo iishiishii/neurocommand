@@ -43,9 +43,8 @@ jobs:
           - name : Publish singularity files in batch
             shell: bash
             run: |
-              echo "Processing batches: ${${{ matrix.app_batches }}[*]} "
               declare -a batch=${{ matrix.app_batches }}
-              echo ${#batch[@]}
+              echo "Processing batches: ${batch[*]} "
               for app in "${batch[@]}"; do
                 echo "  Processing app: $app with ${#app[@]} apps"
                 export IMAGE_HOME="/home/runner"
