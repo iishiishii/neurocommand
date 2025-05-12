@@ -44,7 +44,7 @@ jobs:
           - name : Publish singularity files in batch
             shell: bash
             run: |
-              declare -a batch=${{ matrix.app_batches.apps }}
+              batch=$(echo '${{ matrix.app_batches.apps }}' | jq -r '.[]')
               echo "Processing batches: ${batch[*]} "
               for app in $batch; do
                 echo "  Processing app: $app with ${#app[@]} apps"
