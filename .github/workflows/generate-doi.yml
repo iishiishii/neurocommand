@@ -21,6 +21,7 @@ jobs:
                 # Get the list of unpublished images from app.json
                 echo "Get the list of unpublished images..."
                 export APP_BATCHES=$(python .github/workflows/get-unpublished-apps.py --zenodo_token ${{ secrets.ZENODO_TOKEN }})
+                echo "app_batches=${APP_BATCHES}"
                 echo "app_batches=${APP_BATCHES}" >> $GITHUB_OUTPUT
 
     publish-doi:
