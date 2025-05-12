@@ -44,11 +44,10 @@ jobs:
           - name : Publish singularity files in batch
             shell: bash
             run: |
-              json_input=$(echo '[${{ matrix.app_batches.apps }}]' | sed "s/,/\",\"/g" | sed 's/^/[\"/' | sed 's/$/\"]/')
-              echo "Processing app_batches: $json_input"
-              batch=$(echo "$json_input" | jq -r '.[]')
-              echo "Processing batches: ${batch[*]} "
-              for app in $batch; do
+              echo "Apps to process: ${{ toJson(matrix.app_batches.apps) }}"
+              apps_json='${{ toJson(matrix.app_batches.apps) }}'
+
+              for app in $(echo "$apps_json" | jq -r '.[]'); do
                 echo "  Processing app: $app with ${#app[@]} apps"
                 export IMAGE_HOME="/home/runner"
                 curl --output "$IMAGE_HOME/${app}.simg" "https://object-store.rc.nectar.org.au/v1/AUTH_dead991e1fa847e3afcca2d3a7041f5d/neurodesk/${app}.simg"
